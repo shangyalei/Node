@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<div class="box2">
+    <div>
+        <span>姓名:</span>
+        <input type="text" id="userName">
+    </div>
+    <div>
+        <span>年龄:</span>
+        <input type="text" id="userAge">
+    </div>
+    <div>
+        <span>电话:</span>
+        <input type="text" id="userPhone">
+    </div>
+    <div>
+        <span>地址:</span>
+        <input type="text" id="userAddress">
+    </div>
+
+    <div class="submit" id="submit">提交</div>
+</div>
+
+<h1><a href="index.html">跳转</a></h1>
+
+<script src="lib/jquery-1.11.1.js"></script>
+<script>
+
+    var $userName=$('#userName');
+    var $userAge=$('#userAge');
+    var $userPhone=$('#userPhone');
+    var $submit=$('#submit');
+    var $userAddress=$('#userAddress');
+
+    //判断一下是修改还是增加，如果url的后面传递了ID值就是修改
+    //否则就是增加
+    //这样的话，加载页面的时候第一件事情就是后去URL后面的id值
+    //获取当前页面的URL地址
+
+    //->获取地址栏中的问号后面传递的参数值
+    function queryURLParameter() {
+        var obj = {},
+            curURL = window.location.href,//->获取当前页面的URL地址
+            reg = /([^?&=]+)=([^?&=]+)/g;
+        curURL.replace(reg, function () {
+            obj[arguments[1]] = arguments[2];
+        });
+        return obj;
+    }
+
+    var url=queryURLParameter(window.location.href);
+    var customId=url["id"];
+    //isFlag代表是否修改，true为修改，false代表添加
+    var isFlag=typeof customId==='undefined'?false:true;
+
+    //如果是修改的话，首先把客户的详细信息获取到，并添加到页面中
+    if(isFlag){
+        $.ajax({
+            url:'/getInfo?id='+customId,
+            success:function(jsondata){
+                var data=jsondata;
+                $userName.val(data["name"]);
+                $userAge.val(data['age']);
+                $userPhone.val(data['phone']);
+                $userAddress.val(data['address']);
+            }
+        })
+    }
+
+
+    //点击提交按钮的时候不一定是增加了，还有可能是修改
+    $submit.click(function(){
+        var obj = {
+            name:$userName.val(),
+            age:$userAge.val(),
+            phone:$userPhone.val(),
+            address:$userAddress.val()
+        };
+
+        //修改
+        if(isFlag){
+            obj.id=customId;
+            $.ajax({
+                url:'/update',
+                type:'post',
+                data:JSON.stringify(obj),
+                success:function(jsonData){
+                    window.location.href='index.html';
+                }
+            });
+            return;
+        }
+
+        //增加
+        $.ajax({
+            url:'/add',
+            type:'post',
+            dataType:'json',
+            data:JSON.stringify(obj),//必须是json格式的字符串
+            success:function(){
+                window.location.href='index.html';
+            }
+        });
+
+    });
+
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

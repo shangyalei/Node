@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+1.HTTP报文
+    客户端传递给服务器的内容 和 服务器传递给客户端的内容 都属于HTTP报文
+
+    起始行：请求起始行  相应起始行
+    首部：请求首部  响应首部  通用首部(请求和响应都有的) 自定义首部
+    主体：请求主体 响应主体
+
+2.谷歌浏览器 NetWork 包含所有的HTTP报文
+    General：通用首部 在请求头里面也有，在响应头里面也有
+        Request URL:请求路径
+        Request Method:请求的方法
+        Status Code:返回的状态码
+        Remote Address:请求的IP和端口号
+    Response Headers: 响应首部 服务器设置
+        Connection:
+        content-type: 返回的资源类型和编码
+        Date:响应时间，服务器时间
+        Transfer-Encoding:
+    Request Headers:请求首部 (view source)以代码的方式来看 客户端设置
+        Accept:
+        Accept-Encoding:
+        Accept-Language:
+        Cache-Control:
+        Connection:
+        Host:
+        Upgrade-Insecure-Requests:
+        User-Agent:当前客户端使用的浏览器版本信息
+    浏览器你客户端默认会把一些信息放在请求首部中传递给服务器
+
+    Request Payload：请求主体 客户端传递给服务器的数据内容
+
+
+    Response:响应主体，服务器传递给客户端的数据内容都在响应主体中
+
+
+    总结：
+    客户端传递给服务器端数据
+    1.请求URL后面问号传参的方式传递给服务器
+    2.设置请求的首部，设置请求头信息传递给服务器
+    3.设置请求主体，把传递给服务器的内容放在请求主体部分
+
+    服务器端传递给客户端数据
+    1.设置响应头信息
+    2.设置相应主体内容
+
+    Timing里面保存着HTTP事物处理的时间
+
+
+
+
+
+</body>
+</html>

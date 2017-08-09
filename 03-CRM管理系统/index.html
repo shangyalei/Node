@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<div class="box" id="box">
+    <a href="add.html" class="link">增加客户</a>
+    <h2 class="head">
+        <span class="w50">编号</span>
+        <span class="w150">姓名</span>
+        <span class="w50">年龄</span>
+        <span class="w200">电话</span>
+        <span class="w200">地址</span>
+        <span class="150">操作</span>
+    </h2>
+    <ul class="list" id="list"></ul>
+</div>
+
+<script src="lib/jquery-1.11.1.js"></script>
+<script>
+    //获取所有的客户信息，完成页面的数据绑定
+    $.ajax({
+        url:'/getAllList',
+        dataType:'json',
+        success:function(jsondata){
+
+            var html='';
+
+            $.each(jsondata,function(commentIndex,comment){
+               html+='<li><span class="w50">' +comment['id']+'</span><span class="w150">'+comment['name']+'</span><span class="w50">' +
+                   +comment['age']+'</span><span class="w200">'+comment['phone']+'</span>' +
+                   '<span class="w200">'+comment['address']+'</span><span class="w150 control"><a href="add.html?id='+comment['id']+'">修改</a><a href="javascript:;" customId="'+comment["id"]+'">删除</a></span></li>';
+            });
+
+            $('#list').html(html);
+            removeCustom();
+        }
+    });
+
+
+    var oList=document.getElementById('list');
+
+    function removeCustom(){
+        oList.onclick=function(e){
+            e=e||window.event;
+            var tar=e.target||e.srcElement;
+            var tarTag=tar.tagName.toUpperCase();
+            //点击的是删除按钮
+            if(tarTag==="A"&&tar.innerHTML==="删除"){
+                var customId=tar.getAttribute('customId');
+                //window.confirm确认提示框
+                //如果flag=true说明点击的是确定按钮，反之是取消按钮
+                var flag = window.confirm("确定要删除编号为["+customId+"]的客户吗?");
+                if(flag){
+                    $.ajax({
+                        url:"/remove?id="+customId,
+                        success:function(jsonData){
+                            if(jsonData && jsonData.code===0){
+                                oList.removeChild(tar.parentNode.parentNode);
+                                return;
+                            }
+                            alert(jsonData.message);
+                        }
+
+                    })
+                }
+            }
+        };
+
+    }
+
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+ul,li{
+    list-style: none;
+}
+.box2{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -100px;
+    width: 200px;
+    height: 200px;
+    border:2px solid green;
+}
+.box2 li{
+    height:50px;
+    line-height: 50px;
+}
+.box2 li:nth-child(even){
+    background:#eee;
+}
+.box2 li span{
+    float: left;
+}
+
+.box2 li span:nth-child(1){
+    width: 50px;
+    text-align: center;
+}
+.box2 li span:nth-child(2){
+    width: 150px;
+}
+
+
+

@@ -1,0 +1,131 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    width: 100%;
+    overflow-x: hidden;
+    color:#000;
+    font-size: 14px;
+}
+
+ul,li{
+    list-style: none;
+}
+a,a:hover,a:active,a:visited,a:target{
+    text-decoration: none;
+    color:#000;
+}
+
+/*首页面样式*/
+.box{
+    margin: 20px auto;
+    padding: 20px;
+    width: 800px;
+    border: 2px solid green;
+}
+
+.link{
+    display: block;
+    font-size:16px;
+    margin: 5px 0;
+}
+.link:hover{
+    color:green;
+    text-decoration: underline;
+}
+.head{
+    height: 35px;
+    line-height:35px;
+    background-color: green;
+}
+.head span{
+    float: left;
+    font-size:14px;
+    text-align: center;
+    color:#fff;
+    font-weight:bold;
+}
+.w50{
+    width: 50px;
+}
+.w150{
+    width: 150px;
+}
+.w200{
+    width: 200px;
+}
+
+.list li{
+    height: 35px;
+    line-height: 35px;
+}
+.list li span{
+    float: left;
+    text-align: center;
+}
+
+.list li:nth-child(even){
+    background: #eee;
+}
+.list li:hover{
+    background: #f0ad4e;
+}
+
+.control a{
+    display: inline-block;
+    margin: 0 5px;
+}
+
+/*add页面的样式*/
+input{
+    display:inline-block;
+    outline:none;
+}
+
+.box2{
+    margin: 20px auto;
+    padding: 20px;
+    width: 500px;
+    border:2px solid green;
+}
+.box2 div{
+    height: 32px;
+    margin: 10px auto;
+    line-height:32px;
+}
+.box2 div span{
+    display: inline-block;
+    width: 50px;
+}
+
+.box2 div input{
+    width: 380px;
+    height: 30px;
+    border:1px solid #DDDDDD;
+    padding:0 10px;
+}
+.submit{
+    height: 32px;
+    width: 200px;
+    margin: 10px auto;
+    background: green;
+    text-align: center;
+    color:#fff;
+    cursor: pointer;
+}
+/*禁止换行，显示省略号*/
+.head span,.list li span{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
+
+
+
+
+
+
+

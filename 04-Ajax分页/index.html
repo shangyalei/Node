@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>珠峰培训-Ajax分页</title>
+    <link charset="utf-8" type="text/css" rel="stylesheet" href="css/index.css"/>
+</head>
+<body>
+<div class="box clearx">
+    <h2 class="boxHead">
+        <span>学号</span>
+        <span>姓名</span>
+        <span>性别</span>
+        <span>分数</span>
+    </h2>
+    <ul class="boxList" id="boxList">
+
+    </ul>
+    <div class="boxBtn" id="boxBtn">
+        <span>FIRST</span>
+        <span>PREV</span>
+        <ul id="pageList">
+
+        </ul>
+        <span>NEXT</span>
+        <span>LAST</span>
+        <input type="text" id="search" value="1"/>
+    </div>
+</div>
+<!--<script charset="utf-8" type="text/javascript" src="js/ajax.js"></script>-->
+<!--<script charset="utf-8" type="text/javascript" src="js/index.js"></script>-->
+<script src="js/jquery-1.11.1.js"></script>
+<script>
+
+    //所有按钮：boxBtn==page 数据池:boxList=content  分页按钮池：pageList=pageNum
+    var $content = $("#boxList");
+    var $page = $('#boxBtn');
+    var $pageNum = $("#pageList");
+    var n = 1;//第一页数据
+    var total = 0;//总共几页
+    var data = null;
+    var  search = document.getElementById("search");
+    var content=document.getElementById('boxList');
+
+    function bind() {
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            var curData = data[i];
+            html += '<li studentId="'+curData["num"]+'">';
+            html += '<span>' + curData["num"] + '</span>';
+            html += '<span>' + curData["name"] + '</span>';
+            html += '<span>' + (curData["sex"] === 1 ? "女" : "男") + '</span>';
+            html += '<span>' + curData["score"] + '</span>';
+            html += '</li>';
+        }
+
+        $content.html(html);
+
+        var html2 = '';
+        for (var j = 1; j < total; j++) {
+            if(j===n){
+                html2 += '<li class="bg">' + j + '</li>';
+                continue;
+            }
+            html2 += '<li>' + j + '</li>';
+        }
+        $pageNum.html(html2);
+        search.value = n;
+    }
+
+    var boxBtn=document.getElementById('boxBtn');
+    boxBtn.onclick=function(ev){
+        ev=ev||window.event;
+        var tar = ev.target||ev.srcElement;
+        var tarTag=tar.tagName.toUpperCase();
+        if(tarTag==="SPAN"){
+            if(tar.innerHTML==='FIRST'){
+                if(n===1){
+                    return;
+                }
+                n=1;
+            }
+            if(tar.innerHTML==='LAST'){
+                if(n===total){
+                    return;
+                }
+                n=total;
+            }
+            if(tar.innerHTML==='PREV'){
+                if(n===1){
+                    return;
+                }
+                n--;
+            }
+
+            if(tar.innerHTML==="NEXT"){
+                if(n===total){
+                    return;
+                }
+                n++;
+            }
+
+        }
+        if(tarTag==='LI'){
+            if(n===tar.innerHTML){
+                return;
+            }
+            n=parseFloat(tar.innerHTML);
+        }
+        if(tarTag==='INPUT'){
+            return;
+        }
+        sendAjax();
+    };
+
+
+    function sendAjax() {
+        $.ajax({
+            url: "/getData?n="+n,
+            dataType: 'json',
+            type: 'GET',
+            success: function (jsonData) {
+                total = jsonData['total'];
+                data = jsonData['data'];
+                bind();
+                bindLink();
+            }
+        });
+    }
+
+
+    sendAjax();
+
+
+    search.onkeyup = function (ev) {
+        ev = ev || window.event;
+
+        //->只有按ENTER键才触发操作
+        if (ev.keyCode === 13) {
+            //得到的value值
+            var val = this.value.replace(/^ +| +$/g, "");
+
+            //->验证输入内容的格式：
+            //1)如果不是数字,就显示当前页即可
+            var reg = /^-?(?:\d|(?:[1-9]\d+))(?:\.\d+)?$/;
+            if (!reg.test(val)) {
+                this.value = n;
+                return;
+            }
+
+            //2)如果是小数,让其四舍五入
+            reg = /^-?(?:\d|(?:[1-9]\d+))(?:\.\d+)$/;
+            if (reg.test(val)) {
+                val = Math.round(val);
+            }
+
+            //3)如果小于1,让其等于1
+            if (val < 1) {
+                val = 1;
+            }
+
+            //4)如果大于总页数,让其等于最后一页
+            if (val > total) {
+                val = total;
+            }
+
+            //5)如果输入的值和当前页相等,则不进行任何的操作
+            if (n === val) {
+                n = val;
+                this.value = val;
+                return;
+            }
+
+            //6)正常的话,只需要让n=val
+            n = val;
+            this.value = val;
+
+            sendAjax();
+        }
+    };
+
+
+    function bindLink(){
+        var oLis=content.getElementsByTagName('li');
+        for(var i=0;i<oLis.length;i++){
+            oLis[i].onclick=function(){
+//                window.location.href='detail.html';
+                window.open('detail.html?id='+this.getAttribute("studentId"));
+            }
+        }
+    }
+
+
+
+
+
+
+</script>
+</body>
+</html>
